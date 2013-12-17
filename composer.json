@@ -1,0 +1,23 @@
+{
+    "name": "webbuilders-group/silverstripe-packagistshortcode",
+    "description": "Add a short code for adding a Packagist installs button with a count to a HTMLText field.",
+    "type": "silverstripe-module",
+    "keywords": ["silverstripe", "packagist", "shortcode"],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Ed Chipman",
+            "homepage": "http://webbuildersgroup.com",
+            "role": "Developer"
+        }
+    ],
+
+    "require":
+    {
+        "silverstripe/framework": "3.*",
+        "composer/installers": "*"
+    },
+    "support": {
+        "issues": "https://github.com/webbuilders-group/silverstripe-packagistshortcode/issues"
+    }
+}
