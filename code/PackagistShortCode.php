@@ -1,7 +1,9 @@
 <?php
-class PackagistShortCode {
-    public static function parse($arguments, $content=null, $parser=null) {
-        if(!array_key_exists('package', $arguments) || empty($arguments['package']) || strpos($arguments['package'], '/')<=0) {
+class PackagistShortCode
+{
+    public static function parse($arguments, $content=null, $parser=null)
+    {
+        if (!array_key_exists('package', $arguments) || empty($arguments['package']) || strpos($arguments['package'], '/')<=0) {
             return '<p><i>Packagist package undefined</i></p>';
         }
         
@@ -15,9 +17,9 @@ class PackagistShortCode {
         $obj->Package=$arguments['package'];
         
         //Add the button config
-        if(array_key_exists('mode', $arguments) && ($arguments['mode']=='total' || $arguments['mode']=='monthly' || $arguments['mode']=='daily')) {
+        if (array_key_exists('mode', $arguments) && ($arguments['mode']=='total' || $arguments['mode']=='monthly' || $arguments['mode']=='daily')) {
             $obj->DisplayMode=$arguments['mode'];
-        }else {
+        } else {
             $obj->DisplayMode='total';
         }
         
@@ -27,18 +29,18 @@ class PackagistShortCode {
         $cacheKey=md5('packagistshortcode_'.$arguments['package']);
         $cache=SS_Cache::factory('PackagistShortCode');
         $cachedData=$cache->load($cacheKey);
-        if($cachedData==null) {
+        if ($cachedData==null) {
             $response=self::getFromAPI($arguments['package']);
             
             //Verify a 200, if not say the repo errored out and cache false
-            if(empty($response) || $response===false || !property_exists($response, 'package')) {
+            if (empty($response) || $response===false || !property_exists($response, 'package')) {
                 $cachedData=array('total'=>'N/A', 'monthly'=>'N/A', 'daily'=>'N/A');
-            }else {
-                if($config->UseShortHandNumbers==true) {
+            } else {
+                if ($config->UseShortHandNumbers==true) {
                     $totalDownloads=self::shortHandNumber($response->package->downloads->total);
                     $monthlyDownloads=self::shortHandNumber($response->package->downloads->monthly);
                     $dailyDownloads=self::shortHandNumber($response->package->downloads->daily);
-                }else {
+                } else {
                     $totalDownloads=number_format($response->package->downloads->total);
                     $monthlyDownloads=number_format($response->package->downloads->monthly);
                     $dailyDownloads=number_format($response->package->downloads->daily);
@@ -49,7 +51,7 @@ class PackagistShortCode {
             
             //Cache response to file system
             $cache->save(serialize($cachedData), $cacheKey);
-        }else {
+        } else {
             $cachedData=unserialize($cachedData);
         }
         
@@ -73,8 +75,9 @@ class PackagistShortCode {
      * 
      * @see http://developer.github.com/v3/repos/#get
      */
-    final protected static function getFromAPI($repo) {
-        if(function_exists('curl_init') && $ch=curl_init()) {
+    final protected static function getFromAPI($repo)
+    {
+        if (function_exists('curl_init') && $ch=curl_init()) {
             curl_setopt($ch, CURLOPT_URL, 'https://packagist.org/packages/'.$repo.'.json');
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -84,7 +87,7 @@ class PackagistShortCode {
             curl_close($ch);
             
             return $contents;
-        }else {
+        } else {
             user_error('CURL is not available', E_USER_ERROR);
         }
     }
@@ -94,16 +97,16 @@ class PackagistShortCode {
      * @param {int} $number Number to convert
      * @return {string} Short hand of the given number
      */
-    protected static function shortHandNumber($number) {
-	    if($number>=1000000000) {
-	        return round($number/1000000000, 1).'B';
-	    }else if($number>=1000000) {
-	        return round($number/1000000, 1).'M';
-	    }else if($number>=1000) {
-	        return round($number/1000, 1).'K';
-	    }
-	    
-	    return $number;
-	}
+    protected static function shortHandNumber($number)
+    {
+        if ($number>=1000000000) {
+            return round($number/1000000000, 1).'B';
+        } elseif ($number>=1000000) {
+            return round($number/1000000, 1).'M';
+        } elseif ($number>=1000) {
+            return round($number/1000, 1).'K';
+        }
+        
+        return $number;
+    }
 }
-?>
