@@ -1,5 +1,7 @@
 <?php
 
+namespace WebbuildersGroup\PackagistShortcode;
+
 use SilverStripe\Core\Config\Config;
 use Psr\SimpleCache\CacheInterface;
 use SilverStripe\View\ViewableData;
