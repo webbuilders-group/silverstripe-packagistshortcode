@@ -6,10 +6,17 @@ Add a short code for adding a Packagist installs button with a count to a HTMLTe
 * Ed Chipman ([UndefinedOffset](https://github.com/UndefinedOffset))
 
 ## Requirements
-* SilverStripe CMS 3.x
+* SilverStripe CMS 4.x
 
 
 ## Installation
+__Composer (recommended):__
+```
+composer require webbuilders-group/silverstripe-packagistshortcode
+```
+
+
+If you prefer you may also install manually:
 * Download the module from here https://github.com/webbuilders-group/silverstripe-packagistshortcode/archive/master.zip
 * Extract the downloaded archive into your site root so that the destination folder is called githubshortcode, opening the extracted folder should contain _config.php in the root along with other files/folders
 * Run dev/build?flush=all to regenerate the manifest
@@ -37,7 +44,12 @@ In 3.1 the short codes above will work as included however the updated syntax fo
 There are a few configuration options available to you:
 
 ```yml
+SilverStripe\Core\Injector\Injector:
+    Psr\SimpleCache\CacheInterface.PackagistShortCode:
+        factory: SilverStripe\Core\Cache\CacheFactory
+        constructor:
+            namespace: "NewRelic"
+            defaultLifetime: 86400 #Cache time in seconds
 PackagistShortCode:
-    CacheTime: 86400 #Cache time in seconds (default is 1 day, remember the GitHub api is rate limited)
     UseShortHandNumbers: true #Use short hand numbers i.e 5.6K or not
 ```

@@ -1,4 +1,14 @@
 <?php
+
+namespace WebbuildersGroup\PackagistShortcode;
+
+use SilverStripe\Core\Config\Config;
+use Psr\SimpleCache\CacheInterface;
+use SilverStripe\View\ViewableData;
+use SilverStripe\View\Requirements;
+use SilverStripe\Core\Injector\Injector;
+use SilverStripe\View\SSViewer;
+
 class PackagistShortCode {
     public static function parse($arguments, $content=null, $parser=null) {
         if(!array_key_exists('package', $arguments) || empty($arguments['package']) || strpos($arguments['package'], '/')<=0) {
@@ -22,12 +32,10 @@ class PackagistShortCode {
         }
         
         //Retrieve Stats
-        SS_Cache::set_cache_lifetime('PackagistShortCode', $config->CacheTime);
-        
         $cacheKey=md5('packagistshortcode_'.$arguments['package']);
-        $cache=SS_Cache::factory('PackagistShortCode');
-        $cachedData=$cache->load($cacheKey);
-        if($cachedData==null) {
+        $cache=Injector::inst()->get(CacheInterface::class.'.PackagistShortCode');
+        
+        if(!$cache->has($cacheKey)) {
             $response=self::getFromAPI($arguments['package']);
             
             //Verify a 200, if not say the repo errored out and cache false
@@ -48,9 +56,9 @@ class PackagistShortCode {
             }
             
             //Cache response to file system
-            $cache->save(serialize($cachedData), $cacheKey);
+            $cache->set(serialize($cachedData), $cacheKey);
         }else {
-            $cachedData=unserialize($cachedData);
+            $cachedData=unserialize($cache->get($cacheKey));
         }
         
         
@@ -106,4 +114,3 @@ class PackagistShortCode {
 	    return $number;
 	}
 }
-?>
