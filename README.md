@@ -6,7 +6,7 @@ Add a short code for adding a Packagist installs button with a count to a HTMLTe
 * Ed Chipman ([UndefinedOffset](https://github.com/UndefinedOffset))
 
 ## Requirements
-* SilverStripe CMS 3.x
+* SilverStripe CMS 4.x
 
 
 ## Installation
