@@ -50,6 +50,6 @@ SilverStripe\Core\Injector\Injector:
         constructor:
             namespace: "NewRelic"
             defaultLifetime: 86400 #Cache time in seconds
-PackagistShortCode:
+WebBuildersGroup\PackagistShortCode\PackagistShortCode:
     UseShortHandNumbers: true #Use short hand numbers i.e 5.6K or not
 ```

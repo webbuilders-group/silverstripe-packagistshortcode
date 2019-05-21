@@ -73,10 +73,10 @@ class PackagistShortCode
 
 
         //Init ss viewer and render
-        Requirements::css('webbuilders-group/silverstripe-githubshortcode:css/GitHubButtons.css');
+        Requirements::css('webbuilders-group/silverstripe-packagistshortcode:css/PackagistButton.css');
 
-        // $ssViewer = new SSViewer('PackagistButton');
-        // return $ssViewer->process($obj);
+        $ssViewer = new SSViewer('Includes/PackagistButton');
+        return $ssViewer->process($obj);
     }
 
     /**
