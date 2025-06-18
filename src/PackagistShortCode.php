@@ -2,13 +2,13 @@
 
 namespace WebbuildersGroup\PackagistShortcode;
 
-use SilverStripe\Core\Config\Config;
 use Psr\SimpleCache\CacheInterface;
 use SilverStripe\Core\Config\Configurable;
-use SilverStripe\View\ViewableData;
-use SilverStripe\View\Requirements;
 use SilverStripe\Core\Injector\Injector;
+use SilverStripe\Model\ModelData;
+use SilverStripe\View\Requirements;
 use SilverStripe\View\SSViewer;
+use SilverStripe\View\ViewableData;
 
 class PackagistShortCode
 {
@@ -24,7 +24,7 @@ class PackagistShortCode
         $config = self::config();
 
 
-        $obj = new ViewableData();
+        $obj = (class_exists(ModelData::class)) ? new ModelData() : new ViewableData();
 
         //Add the Respository Setting
         $obj->Package = $arguments['package'];
@@ -83,7 +83,7 @@ class PackagistShortCode
      * Loads the data from the github api
      * @param {string} $url URL to load
      * @return {stdObject} Returns the JSON Response from the GitHub API
-     * 
+     *
      * @see http://developer.github.com/v3/repos/#get
      */
     final protected static function getFromAPI($repo)
